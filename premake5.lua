@@ -1,40 +1,31 @@
-project "GLFW"
+project "glfw"
     kind "StaticLib"
     language "C"
-    staticruntime "on"
+    staticruntime "On"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/%{cfg.buildcfg}/%{prj.name}")
+    objdir ("bin/build/%{prj.name}")
 
     files
     {
         "include/GLFW/glfw3.h",
         "include/GLFW/glfw3native.h",
-        "src/**.c", -- Eu desisto
-        "src/**.h"  -- Sem vergonha nenhuma
+        "src/**.c",
+        "src/**.h"
     }
 
     filter "system:linux"
-        pic "on"
-
-        defines
-        {
-            "_GLFW_X11"
-        }
+        pic "On"
+        defines { "_GLFW_X11" }
 
     filter "system:windows"
         systemversion "latest"
+        defines { "_GLFW_WIN32", "_CRT_SECURE_NO_WARNINGS" }
 
-        defines
-        {
-            "_GLFW_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
-        }
-
-    filter "configurations:Debug"
+    filter "configurations:debug"
         runtime "Debug"
-        symbols "on"
+        symbols "On"
 
-    filter "configurations:Release"
+    filter "configurations:release"
         runtime "Release"
-        optimize "on"
+        optimize "On"
